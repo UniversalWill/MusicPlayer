@@ -1,0 +1,12 @@
+﻿<Application x:Class="MusicPlayer.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:MusicPlayer"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+         
+        <SolidColorBrush x:Key="ColorOfText" Color="#FF00FF19"/>
+        <SolidColorBrush x:Key="Background" Color="#FF272323"/>
+        <SolidColorBrush x:Key="ButtonBackground" Color="#FFD85454"/>
+    </Application.Resources>
+</Application>

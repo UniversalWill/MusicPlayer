@@ -24,30 +24,41 @@ namespace MusicPlayer
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MediaPlayer mediaPlayer = new MediaPlayer();
+
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void OpenFolder_Click(object sender, RoutedEventArgs e)
+        public static FileInfo[]? GetFiles()
         {
             var dialog = new CommonOpenFileDialog
             {
                 IsFolderPicker = true
             };
-
+            FileInfo[]? Files = null;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 var path_to_music = dialog.FileName;
-                ListMusic.Items.Clear();
                 DirectoryInfo folder_with_music = new(path_to_music);
-                FileInfo[] Files = folder_with_music.GetFiles("*.mp3");
-                foreach (FileInfo file in Files)
-                {
-                    ListMusic.Items.Add(System.IO.Path.GetFileNameWithoutExtension(file.Name));
-                }
+                Files = folder_with_music.GetFiles("*.mp3");
             }
+            return Files;
+        }
 
+        private void OpenFolder_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (FileInfo file in GetFiles());
+            {
+                ListMusic.Items.Add(System.IO.Path.GetFileNameWithoutExtension(file));
+            } 
+        }
+
+        private void PlayTrack_Click(object sender, RoutedEventArgs e)
+        {
+            string selected_music = ListMusic.Items[index: ListMusic.SelectedIndex].ToString();
+            mediaPlayer.Open(new Uri(Files ));
         }
     }
 }

@@ -19,19 +19,18 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace MusicPlayer
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        private MediaPlayer mediaPlayer = new MediaPlayer();
+        private readonly MediaPlayer mediaPlayer = new();
+
+        private FileInfo[]? files = null;
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        public static FileInfo[]? GetFiles()
+        public FileInfo[]? GetFiles()
         {
             var dialog = new CommonOpenFileDialog
             {
@@ -49,16 +48,25 @@ namespace MusicPlayer
 
         private void OpenFolder_Click(object sender, RoutedEventArgs e)
         {
-            foreach (FileInfo file in GetFiles());
+            files = GetFiles();
+            if (files != null)
             {
-                ListMusic.Items.Add(System.IO.Path.GetFileNameWithoutExtension(file));
-            } 
+                foreach (FileInfo file in files)
+                {
+                    ListMusic.Items.Add(System.IO.Path.GetFileNameWithoutExtension(file.Name));
+                }
+            }
+             
         }
 
         private void PlayTrack_Click(object sender, RoutedEventArgs e)
         {
-            string selected_music = ListMusic.Items[index: ListMusic.SelectedIndex].ToString();
-            mediaPlayer.Open(new Uri(Files ));
+            if (files != null)
+            {
+                int selected_music = ListMusic.SelectedIndex;
+                mediaPlayer.Open(new Uri(files[selected_music].ToString()));
+                mediaPlayer.Play();
+            }
         }
     }
 }
